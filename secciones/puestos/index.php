@@ -5,8 +5,6 @@ include("../../db.php");
 $sentencia = $conn -> prepare("SELECT * FROM `tbl_puestos`");
 $sentencia -> execute();
 $lista_tbl_puestos = $sentencia -> fetchAll(PDO::FETCH_ASSOC);
-
-print_r($lista_tbl_puestos);
 ?>
 <?php
 include("../../templates/header.php");
@@ -30,13 +28,16 @@ include("../../templates/header.php");
                     </tr>
                 </thead>
                 <tbody>
+
+                <?php foreach ($lista_tbl_puestos as $registro) { ?>
                     <tr class="">
-                        <td scope="row">1</td>
-                        <td>Programador Sr</td>
+                        <td scope="row"><?php echo $registro['id']; ?></td>
+                        <td><?php echo $registro['nombredelpuesto']; ?></td>
                         <td><input name="btn-editar" id="btn-editar" class="btn btn-info" type="button" value="Editar">
                         <input name="btn-eliminar" id="btn-eliminar" class="btn btn-danger" type="button" value="Eliminar">
                     </td>
                     </tr>
+                    <?php } ?>    
                 </tbody>
             </table>
         </div>
