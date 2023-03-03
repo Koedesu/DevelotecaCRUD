@@ -6,7 +6,7 @@
     $password = "";
 
     try{
-        $conn = new PDO("mysql:host=$servidor;db=$db",$name,$password);
+        $conn = new PDO("mysql:host=$servidor;dbname=$db",$name,$password);
     }catch(Exception $ex){
         echo $ex->getMessage(); 
     };
