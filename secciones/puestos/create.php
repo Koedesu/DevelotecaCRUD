@@ -4,12 +4,17 @@ include("../../db.php");
 if($_POST){
     //Recolectamos los datos del metodo POST
     $nombredelpuesto=(isset($_POST["nombredelpuesto"])?$_POST["nombredelpuesto"]:"");
+
+    $qr_data = "Nombre: $nombredelpuesto";
+    $qr_code = 'https://chart.googleapis.com/chart?chs=150x150&cht=qr&chl=' . urlencode($qr_data);
+
     //Preparar insercion de los datos
-    $sentencia = $conn -> prepare("INSERT INTO tbl_puestos(id,nombredelpuesto)
-        VALUES (null, :nombredelpuesto)");
+    $sentencia = $conn -> prepare("INSERT INTO tbl_puestos(id,nombredelpuesto,qr_code)
+        VALUES (null, :nombredelpuesto, :qr_code)");
 
     //Asignando los valores que vienen del moetodo POST
     $sentencia -> bindParam(":nombredelpuesto",$nombredelpuesto);
+    $sentencia -> bindParam(":qr_code",$qr_code);
     $sentencia -> execute();
     
 

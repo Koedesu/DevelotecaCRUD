@@ -37,6 +37,7 @@ include("../../templates/header.php");
                     <tr>
                         <th scope="col">ID</th>
                         <th scope="col">Nombre del Puesto</th>
+                        <th scope="col">QR</th>
                         <th scope="col">Acciones</th>
                     </tr>
                 </thead>
@@ -46,6 +47,9 @@ include("../../templates/header.php");
                     <tr class="">
                         <td scope="row"><?php echo $registro['id']; ?></td>
                         <td><?php echo $registro['nombredelpuesto']; ?></td>
+                        <td>
+                        <?php echo "<img src='" . $registro['qr_code'] . "'>"; ?>
+                        </td>
                         <td>
                             <a class="btn btn-info" href="edit.php?txtID=<?php echo $registro['id']; ?>" role="button">Editar</a>
                             <a class="btn btn-danger" href="index.php?txtID=<?php echo $registro['id']; ?>" role="button">Eliminar</a>

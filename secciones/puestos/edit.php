@@ -8,18 +8,27 @@ if(isset($_GET['txtID'])){
   $sentencia = $conn -> prepare("SELECT * FROM tbl_puestos WHERE id=:id");
   $sentencia -> bindParam(":id",$txtID);
   $sentencia -> execute();
+
   $registro = $sentencia -> fetch(PDO::FETCH_LAZY);
+
   $nombredelpuesto = $registro["nombredelpuesto"];
+  //$qr_code = $registro["qr_code"];
 }
 if($_POST){
   //Recolectamos los datos del metodo POST
   $txtID = (isset($_POST['txtID']))?$_POST['txtID']:"";
   $nombredelpuesto=(isset($_POST["nombredelpuesto"])?$_POST["nombredelpuesto"]:"");
+
+  $qr_data = "Nombre: $nombredelpuesto";
+    $qr_code = 'https://chart.googleapis.com/chart?chs=150x150&cht=qr&chl=' . urlencode($qr_data);
+
   //Preparar insercion de los datos
-  $sentencia = $conn -> prepare("UPDATE tbl_puestos SET nombredelpuesto= :nombredelpuesto
+  $sentencia = $conn -> prepare("UPDATE tbl_puestos SET nombredelpuesto= :nombredelpuesto,
+  qr_code=:qr_code
   WHERE id=:id");
   //Asignando los valores que vienen del moetodo POST
   $sentencia -> bindParam(":nombredelpuesto",$nombredelpuesto);
+  $sentencia -> bindParam(":qr_code",$qr_code);
   $sentencia -> bindParam (":id",$txtID);
   $sentencia -> execute();
 
