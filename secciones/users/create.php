@@ -1,5 +1,24 @@
-<?php 
+<?php   
+include("../../db.php");
 
+if($_POST){
+    //Recolectamos los datos del metodo POST
+    $usuario=(isset($_POST["usuario"])?$_POST["usuario"]:"");
+    $password=(isset($_POST["password"])?$_POST["password"]:"");
+    $correo=(isset($_POST["correo"])?$_POST["correo"]:"");
+    //Preparar insercion de los datos
+    $sentencia = $conn -> prepare("INSERT INTO tbl_usuarios(id,usuario,password,correo)
+        VALUES (null, :usuario, :password, :correo)"); 
+    //Asignando los valores que vienen del moetodo POST
+    $sentencia -> bindParam(":usuario",$usuario);
+    $sentencia -> bindParam(":password",$password);
+    $sentencia -> bindParam(":correo",$correo);
+    $sentencia -> execute();
+  
+    //Header("Location:index.php");
+}
+?>
+<?php 
 include("../../templates/header.php");
 ?>
 <br>
