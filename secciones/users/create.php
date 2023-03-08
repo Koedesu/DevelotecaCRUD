@@ -15,7 +15,7 @@ if($_POST){
     $sentencia -> bindParam(":correo",$correo);
     $sentencia -> execute();
   
-    //Header("Location:index.php");
+    Header("Location:index.php");
 }
 ?>
 <?php 

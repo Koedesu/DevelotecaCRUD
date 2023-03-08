@@ -1,7 +1,19 @@
 <?php  
 include("../../db.php");
 
+//METODO DELETE
+if(isset($_GET['txtID'])){
 
+    $txtID = (isset($_GET['txtID']))?$_GET['txtID']:"";
+
+    $sentencia = $conn -> prepare("DELETE FROM tbl_usuarios WHERE id=:id");
+    $sentencia -> bindParam(":id",$txtID);
+    $sentencia -> execute();
+
+    Header("Location:index.php");
+}
+
+//METODO GET PARA MOSTRAR INFIORMACION
 $sentencia = $conn -> prepare("SELECT * FROM `tbl_usuarios`");
 $sentencia -> execute();
 $lista_tbl_usuarios = $sentencia -> fetchAll(PDO::FETCH_ASSOC);
