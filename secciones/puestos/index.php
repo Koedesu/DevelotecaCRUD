@@ -47,7 +47,7 @@ include("../../templates/header.php");
                         <td scope="row"><?php echo $registro['id']; ?></td>
                         <td><?php echo $registro['nombredelpuesto']; ?></td>
                         <td>
-                            <input name="btn-editar" id="btn-editar" class="btn btn-info" type="button" value="Editar">
+                            <a class="btn btn-info" href="edit.php?txtID=<?php echo $registro['id']; ?>" role="button">Editar</a>
                             <a class="btn btn-danger" href="index.php?txtID=<?php echo $registro['id']; ?>" role="button">Eliminar</a>
                         </td>
                     </tr>

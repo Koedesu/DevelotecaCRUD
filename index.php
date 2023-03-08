@@ -11,7 +11,6 @@ include("templates/header.php");
       <button class="btn btn-primary btn-lg" type="button">Example button</button>
     </div>
     </div>
-
 <?php 
 
 include("templates/footer.php");
