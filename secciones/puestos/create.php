@@ -4,13 +4,18 @@ include("../../db.php");
 if($_POST){
     //Recolectamos los datos del metodo POST
     $nombredelpuesto=(isset($_POST["nombredelpuesto"])?$_POST["nombredelpuesto"]:"");
+
+    $qr_code=(isset($_POST["qr_code"])?$_POST["qr_code"]:"");
+
     //Preparar insercion de los datos
-    $sentencia = $conn -> prepare("INSERT INTO tbl_puestos(id,nombredelpuesto)
-        VALUES (null, :nombredelpuesto)");
+    $sentencia = $conn -> prepare("INSERT INTO tbl_puestos(id,nombredelpuesto,qr_code)
+        VALUES (null, :nombredelpuesto, :qr_code)");
 
     //Asignando los valores que vienen del moetodo POST
-    $sentencia -> bindParam(":nombredelpuesto",$nombredelpuesto);
+    $sentencia -> bindParam(":nombredelpuesto",$nombredelpuesto, ":qr_code",$qr_code);
     $sentencia -> execute();
+    
+
     Header("Location:index.php");
 }
 ?>
