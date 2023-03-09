@@ -19,14 +19,33 @@ if($_POST){
     `tbl_empleados` (`id`, `pnombre`, `snombre`, `papellido`, 
     `sapellido`, `foto`, `cv`, `idpuesto`, `fechaingreso`) 
     VALUES (NULL, :pnombre, :snombre, :papellido, :sapellido, :foto, :cv, :idpuesto, :fechadeingreso);"); 
+
     //Asignando los valores que vienen del moetodo POST
     $sentencia -> bindParam(":pnombre",$pnombre);
     $sentencia -> bindParam(":snombre",$snombre);
     $sentencia -> bindParam(":papellido",$papellido);
     $sentencia -> bindParam(":sapellido",$sapellido);
 
-    $sentencia -> bindParam(":foto",$foto);
-    $sentencia -> bindParam(":cv",$cv);
+    $fecha_ = new DateTime();
+
+    $nombreArchivo_foto = ($foto!='')?$fecha_ -> getTimestamp()."_".$_FILES["foto"]['name']:"";
+    $tmp_foto = $_FILES["foto"]['tmp_name'];
+
+    if($tmp_foto!=''){
+      move_uploaded_file($tmp_foto,"./".$nombreArchivo_foto);
+    }
+
+    $sentencia -> bindParam(":foto",$nombreArchivo_foto);
+
+    $nombreArchivo_cv = ($cv!='')?$fecha_ -> getTimestamp()."_".$_FILES["cv"]['name']:"";
+    $tmp_cv = $_FILES["cv"]['tmp_name'];
+
+    if($tmp_foto!=''){
+      move_uploaded_file($tmp_cv,"./".$nombreArchivo_cv);
+    }
+
+    
+    $sentencia -> bindParam(":cv",$nombreArchivo_cv);
 
     $sentencia -> bindParam(":idpuesto",$idpuesto);
     $sentencia -> bindParam(":fechadeingreso",$fechadeingreso);

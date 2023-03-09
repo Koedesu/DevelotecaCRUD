@@ -58,7 +58,11 @@ include("../../templates/header.php");
                                 <?php echo $registro['papellido'];?>
                                 <?php echo $registro['sapellido'];?>
                             </td>
-                            <td><?php echo $registro['foto'];?></td>
+                            <td>
+                                <img width="50" 
+                                src="<?php echo $registro['foto'];?>" 
+                                class="img-fluid rounded-top" alt="">
+                            </td>
                             <td><?php echo $registro['cv'];?></td>
                             <td><?php echo $registro['puesto'];?></td>
                             <td><?php echo $registro['fechaingreso'];?></td>
