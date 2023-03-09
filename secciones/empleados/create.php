@@ -1,5 +1,46 @@
-<?php 
+<?php   
+include("../../db.php");
 
+if($_POST){
+    //Recolectamos los datos del metodo POST
+    $pnombre=(isset($_POST["pnombre"])?$_POST["pnombre"]:"");
+    $snombre=(isset($_POST["snombre"])?$_POST["snombre"]:"");
+    $papellido=(isset($_POST["papellido"])?$_POST["papellido"]:"");
+    $sapellido=(isset($_POST["sapellido"])?$_POST["sapellido"]:"");
+
+    $foto=(isset($_FILES["foto"]['name'])?$_FILES["foto"]['name']:"");
+    $cv=(isset($_FILES["cv"]['name'])?$_FILES["cv"]['name']:"");
+    
+    $idpuesto=(isset($_POST["idpuesto"])?$_POST["idpuesto"]:"");
+    $fechadeingreso=(isset($_POST["fechadeingreso"])?$_POST["fechadeingreso"]:"");
+
+    //Preparar insercion de los datos
+    $sentencia = $conn -> prepare("INSERT INTO 
+    `tbl_empleados` (`id`, `pnombre`, `snombre`, `papellido`, 
+    `sapellido`, `foto`, `cv`, `idpuesto`, `fechaingreso`) 
+    VALUES (NULL, :pnombre, :snombre, :papellido, :sapellido, :foto, :cv, :idpuesto, :fechadeingreso);"); 
+    //Asignando los valores que vienen del moetodo POST
+    $sentencia -> bindParam(":pnombre",$pnombre);
+    $sentencia -> bindParam(":snombre",$snombre);
+    $sentencia -> bindParam(":papellido",$papellido);
+    $sentencia -> bindParam(":sapellido",$sapellido);
+
+    $sentencia -> bindParam(":foto",$foto);
+    $sentencia -> bindParam(":cv",$cv);
+
+    $sentencia -> bindParam(":idpuesto",$idpuesto);
+    $sentencia -> bindParam(":fechadeingreso",$fechadeingreso);
+  
+    $sentencia -> execute();
+  
+    Header("Location:index.php");
+}
+$sentencia = $conn -> prepare("SELECT * FROM `tbl_puestos`");
+$sentencia -> execute();
+$lista_tbl_puestos = $sentencia -> fetchAll(PDO::FETCH_ASSOC);
+?>
+
+<?php 
 include("../../templates/header.php");
 ?>
 <br>
@@ -12,27 +53,27 @@ include("../../templates/header.php");
     <form action="" method="post" enctype="multipart/form-data">
 
     <div class="mb-3">
-      <label for="primernombre" class="form-label">Primer Nombre</label>
+      <label for="pnombre" class="form-label">Primer Nombre</label>
       <input type="text"
-        class="form-control" name="primernombre" id="" aria-describedby="helpId" placeholder="Primer Nombre">
+        class="form-control" name="pnombre" id="pnombre" aria-describedby="helpId" placeholder="Primer Nombre">
     </div>
 
     <div class="mb-3">
-      <label for="segundonombre" class="form-label">Segundo Nombre</label>
+      <label for="snombre" class="form-label">Segundo Nombre</label>
       <input type="text"
-        class="form-control" name="segundonombre" id="segundonombre" aria-describedby="helpId" placeholder="Segundo Nombre">
+        class="form-control" name="snombre" id="snombre" aria-describedby="helpId" placeholder="Segundo Nombre">
     </div>
 
     <div class="mb-3">
-      <label for="primerapellido" class="form-label">Primer Apellido</label>
+      <label for="papellido" class="form-label">Primer Apellido</label>
       <input type="text"
-        class="form-control" name="primerapellido" id="primerapellido" aria-describedby="helpId" placeholder="Primer Apellido">
+        class="form-control" name="papellido" id="papellido" aria-describedby="helpId" placeholder="Primer Apellido">
     </div>
 
     <div class="mb-3">
-      <label for="segundoapellido" class="form-label">Segundo Apellido</label>
+      <label for="sapellido" class="form-label">Segundo Apellido</label>
       <input type="text"
-        class="form-control" name="segundoapellido" id="segundoapellido" aria-describedby="helpId" placeholder="Segundo Apellido">
+        class="form-control" name="sapellido" id="segundoapellido" aria-describedby="helpId" placeholder="Segundo Apellido">
     </div>
 
     <div class="mb-3">
@@ -48,11 +89,14 @@ include("../../templates/header.php");
 
     <div class="mb-3">
         <label for="idpuesto" class="form-label">Puesto:</label>
+
         <select class="form-select form-select-sm" name="idpuesto" id="idpuesto">
-            <option selected>Select one</option>
-            <option value="">New Delhi</option>
-            <option value="">Istanbul</option>
-            <option value="">Jakarta</option>
+        <?php foreach ($lista_tbl_puestos as $registro) { ?>
+            <option value="<?php echo $registro['id']; ?>">
+            <?php echo $registro['nombredelpuesto']; ?>
+          </option>
+            <?php } ?>
+
         </select>
     </div>
 
@@ -61,7 +105,7 @@ include("../../templates/header.php");
       <input type="date" class="form-control" name="fechadeingreso" id="fechadeingreso" aria-describedby="emailHelpId" placeholder="Fecha de ingreso:">
     </div>
 
-    <button type="submitt" class="btn btn-success">Agregar Registro</button>
+    <button type="submit" class="btn btn-success">Agregar Registro</button>
     <a name="" id="" class="btn btn-danger" href="index.php" role="button">Cancelar</a>
 
     </form>
@@ -74,5 +118,4 @@ include("../../templates/header.php");
 
 <?php
 include("../../templates/footer.php");
-
 ?>
