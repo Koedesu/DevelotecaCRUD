@@ -8,11 +8,28 @@ if(isset($_GET['txtID'])){
 
     $txtID = (isset($_GET['txtID']))?$_GET['txtID']:"";
 
+    //BUSCAR EL ARCHIVO RELACIONADO CON EL EMPLEADO
+    $sentencia = $conn -> prepare("SELECT foto,cv FROM `tbl_empleados` WHERE id=:id");
+    $sentencia ->bindParam(":id",$txtID);
+    $sentencia -> execute();
+    $registro_recuperado = $sentencia -> fetch(PDO::FETCH_LAZY);
+
+    if(isset($registro_recuperado["foto"])&& $registro_recuperado["foto"]!=""){
+        if(file_exists("./".$registro_recuperado["foto"])){
+            unlink("./".$registro_recuperado["foto"]);
+        }
+    }
+
+    if(isset($registro_recuperado["cv"])&& $registro_recuperado["cv"]!=""){
+        if(file_exists("./".$registro_recuperado["cv"])){
+            unlink("./".$registro_recuperado["cv"]);
+        }
+    }
+
     $sentencia = $conn -> prepare("DELETE FROM tbl_empleados WHERE id=:id");
     $sentencia -> bindParam(":id",$txtID);
     $sentencia -> execute();
     Header("Location:index.php");
-
 }
 $sentencia = $conn -> prepare("SELECT *, 
 
@@ -66,10 +83,14 @@ include("../../templates/header.php");
                             <td><?php echo $registro['cv'];?></td>
                             <td><?php echo $registro['puesto'];?></td>
                             <td><?php echo $registro['fechaingreso'];?></td>
-                            <td><a name="" id="" class="btn btn-success" href="#" role="button">
-                            Carta</a>
-                            <a class="btn btn-info" href="edit.php?txtID=<?php echo $registro['id']; ?>" role="button">Editar</a>
-                            <a class="btn btn-danger" href="index.php?txtID=<?php echo $registro['id']; ?>" role="button">Eliminar</a>
+                            <td><a name="" id="" class="btn btn-success" 
+                            href="#" role="button">Carta</a>
+
+                            | <a class="btn btn-info" href="edit.php?txtID=<?php echo $registro['id']; ?>" 
+                            role="button">Editar</a>
+                            
+                            | <a class="btn btn-danger" href="index.php?txtID=<?php echo $registro['id']; ?>" 
+                            role="button">Eliminar</a>
                             </td>
                     </tr>
                     <?php } ?>

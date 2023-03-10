@@ -27,24 +27,21 @@ if($_POST){
     $sentencia -> bindParam(":sapellido",$sapellido);
 
     $fecha_ = new DateTime();
-
+    
+    //SENTECIA FOTO
     $nombreArchivo_foto = ($foto!='')?$fecha_ -> getTimestamp()."_".$_FILES["foto"]['name']:"";
     $tmp_foto = $_FILES["foto"]['tmp_name'];
-
     if($tmp_foto!=''){
       move_uploaded_file($tmp_foto,"./".$nombreArchivo_foto);
     }
-
     $sentencia -> bindParam(":foto",$nombreArchivo_foto);
 
+    //SENTENCIA PDF
     $nombreArchivo_cv = ($cv!='')?$fecha_ -> getTimestamp()."_".$_FILES["cv"]['name']:"";
     $tmp_cv = $_FILES["cv"]['tmp_name'];
-
     if($tmp_foto!=''){
       move_uploaded_file($tmp_cv,"./".$nombreArchivo_cv);
     }
-
-    
     $sentencia -> bindParam(":cv",$nombreArchivo_cv);
 
     $sentencia -> bindParam(":idpuesto",$idpuesto);
