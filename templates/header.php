@@ -33,7 +33,7 @@ $url_base="http://localhost/develotecaCRUD/"
               <a class="nav-link" href="<?php echo $url_base;?>secciones/empleados/">Empleados</a>
           </li>
           <li class="nav-item">
-              <a class="nav-link" href="<?php echo $url_base;?>secciones/puestos/">Puestos</a>
+              <a class="nav-link" href="<?php echo $url_base;?>secciones/puestos/">Inventario Produccion</a>
           </li>
           <li class="nav-item">
               <a class="nav-link" href="<?php echo $url_base;?>secciones/users/">Usuarios</a>

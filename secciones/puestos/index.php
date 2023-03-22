@@ -8,14 +8,14 @@ if(isset($_GET['txtID'])){
 
     $txtID = (isset($_GET['txtID']))?$_GET['txtID']:"";
 
-    $sentencia = $conn -> prepare("DELETE FROM tbl_puestos WHERE id=:id");
+    $sentencia = $conn -> prepare("DELETE FROM tbl_invProd WHERE id=:id");
     $sentencia -> bindParam(":id",$txtID);
     $sentencia -> execute();
     Header("Location:index.php");
 
 }
 
-$sentencia = $conn -> prepare("SELECT * FROM `tbl_puestos`");
+$sentencia = $conn -> prepare("SELECT * FROM `tbl_invProd`");
 $sentencia -> execute();
 $lista_tbl_puestos = $sentencia -> fetchAll(PDO::FETCH_ASSOC);
 ?>
@@ -23,6 +23,7 @@ $lista_tbl_puestos = $sentencia -> fetchAll(PDO::FETCH_ASSOC);
 include("../../templates/header.php");
 ?>
 <br>
+<h4>Inventario Producción</h4>
 
 <div class="card">
     <div class="card-header">
@@ -36,7 +37,10 @@ include("../../templates/header.php");
                 <thead>
                     <tr>
                         <th scope="col">ID</th>
-                        <th scope="col">Nombre del Puesto</th>
+                        <th scope="col"># de Pieza</th>
+                        <th scope="col">Cliente</th>
+                        <th scope="col">Cantidad</th>
+                        <th scope="col">Ubicación</th>
                         <th scope="col">QR</th>
                         <th scope="col">Acciones</th>
                     </tr>
@@ -46,9 +50,13 @@ include("../../templates/header.php");
                 <?php foreach ($lista_tbl_puestos as $registro) { ?>
                     <tr class="">
                         <td scope="row"><?php echo $registro['id']; ?></td>
-                        <td><?php echo $registro['nombredelpuesto']; ?></td>
+                        <td><?php echo $registro['numdepieza']; ?></td>
+                        <td><?php echo $registro['cliente']; ?></td>
+                        <td><?php echo $registro['cantidad']; ?></td>
+                        <td><?php echo $registro['ubicacion']; ?></td>
                         <td>
-                        <?php echo "<img src='" . $registro['qr_code'] . "'>"; ?>
+                        <?php echo "<img src='" . $registro['qr_code'] . "'>"; ?> <br>
+                        <a href="<?php echo $registro['qr_code']; ?>"><?php echo $registro['numdepieza']; ?></a>
                         </td>
                         <td>
                             <a class="btn btn-info" href="edit.php?txtID=<?php echo $registro['id']; ?>" role="button">Editar</a>

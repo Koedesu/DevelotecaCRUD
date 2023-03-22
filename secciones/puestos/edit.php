@@ -5,29 +5,41 @@ if(isset($_GET['txtID'])){
 
   $txtID = (isset($_GET['txtID']))?$_GET['txtID']:"";
 
-  $sentencia = $conn -> prepare("SELECT * FROM tbl_puestos WHERE id=:id");
+  $sentencia = $conn -> prepare("SELECT * FROM tbl_invprod WHERE id=:id");
   $sentencia -> bindParam(":id",$txtID);
   $sentencia -> execute();
 
   $registro = $sentencia -> fetch(PDO::FETCH_LAZY);
 
-  $nombredelpuesto = $registro["nombredelpuesto"];
+  $numdepieza = $registro["numdepieza"];
+  $cliente = $registro["cliente"];
+  $cantidad = $registro["cantidad"];
+  $ubicacion = $registro["ubicacion"];
   //$qr_code = $registro["qr_code"];
 }
 if($_POST){
   //Recolectamos los datos del metodo POST
   $txtID = (isset($_POST['txtID']))?$_POST['txtID']:"";
-  $nombredelpuesto=(isset($_POST["nombredelpuesto"])?$_POST["nombredelpuesto"]:"");
+  $numdepieza=(isset($_POST["numdepieza"])?$_POST["numdepieza"]:"");
+  $cliente=(isset($_POST["cliente"])?$_POST["cliente"]:"");
+  $cantidad=(isset($_POST["cantidad"])?$_POST["cantidad"]:"");
+  $ubicacion=(isset($_POST["ubicacion"])?$_POST["ubicacion"]:"");
 
-  $qr_data = "Nombre: $nombredelpuesto";
+  $qr_data = "# de Pieza: $numdepieza // Cliente: $cliente // Cantidad: $cantidad // Ubicacion: $ubicacion";
     $qr_code = 'https://chart.googleapis.com/chart?chs=150x150&cht=qr&chl=' . urlencode($qr_data);
 
   //Preparar insercion de los datos
-  $sentencia = $conn -> prepare("UPDATE tbl_puestos SET nombredelpuesto= :nombredelpuesto,
+  $sentencia = $conn -> prepare("UPDATE tbl_invprod SET numdepieza= :numdepieza,
+  cliente= :cliente,
+  cantidad= :cantidad,
+  ubicacion= :ubicacion,
   qr_code=:qr_code
   WHERE id=:id");
   //Asignando los valores que vienen del moetodo POST
-  $sentencia -> bindParam(":nombredelpuesto",$nombredelpuesto);
+  $sentencia -> bindParam(":numdepieza",$numdepieza);
+  $sentencia -> bindParam(":cliente",$cliente);
+  $sentencia -> bindParam(":cantidad",$cantidad);
+  $sentencia -> bindParam(":ubicacion",$ubicacion);
   $sentencia -> bindParam(":qr_code",$qr_code);
   $sentencia -> bindParam (":id",$txtID);
   $sentencia -> execute();
@@ -55,10 +67,31 @@ include("../../templates/header.php");
     </div>
 
     <div class="mb-3">
-      <label for="nombredelpuesto" class="form-label">Nombre del Puesto:</label>
+      <label for="numdepieza" class="form-label"># de Pieza:</label>
       <input type="text"
-        value= "<?php echo $nombredelpuesto; ?>"
-        class="form-control" name="nombredelpuesto" id="nombredelpuesto" aria-describedby="helpId" placeholder="Nombre del puesto:">
+        value= "<?php echo $numdepieza; ?>"
+        class="form-control" name="numdepieza" id="numdepieza" aria-describedby="helpId" placeholder="# de Pieza:">
+    </div>
+
+    <div class="mb-3">
+      <label for="cliente" class="form-label">Cliente:</label>
+      <input type="text"
+        value= "<?php echo $cliente; ?>"
+        class="form-control" name="cliente" id="cliente" aria-describedby="helpId" placeholder="Cliente:">
+    </div>
+
+    <div class="mb-3">
+      <label for="cantidad" class="form-label">Cantidad:</label>
+      <input type="text"
+        value= "<?php echo $cantidad; ?>"
+        class="form-control" name="cantidad" id="cantidad" aria-describedby="helpId" placeholder="Cantidad:">
+    </div>
+
+    <div class="mb-3">
+      <label for="cantidad" class="form-label">Ubicacion:</label>
+      <input type="text"
+        value= "<?php echo $ubicacion; ?>"
+        class="form-control" name="ubicacion" id="ubicacion" aria-describedby="helpId" placeholder="Ubicació:">
     </div>
 
     <button type="submit" class="btn btn-success">Actualizar</button> 
